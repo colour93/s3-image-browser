@@ -33,7 +33,7 @@ RUN adduser --system --uid 1001 nextjs
 
 # 自动利用输出跟踪来减少镜像大小
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next/server ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 # 配置文件通过挂载提供，不在构建时复制
