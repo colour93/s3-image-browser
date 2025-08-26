@@ -81,7 +81,7 @@ jobs:
           feishu_template_version_name: ${{ vars.FEISHU_NOTIFY_TEMPLATE_VERSION }}
           feishu_webhook_url: ${{ secrets.FEISHU_NOTIFY_WEBHOOK_URL }}
           build_result: ${{ needs.push_to_registry.result }}
-          ci_target: UI
+          ci_target: S3 Image Browser
           ci_target_image: colour93/s3-image-browser
           ci_target_tag: ${GITHUB_REF#refs/tags/}
           build_time: ${{ needs.push_to_registry.outputs.build_time }} 
