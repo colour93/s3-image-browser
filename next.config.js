@@ -14,9 +14,6 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    serverExternalPackages: ['@aws-sdk/client-s3'],
-  },
   output: 'standalone',
 
   // 配置重写规则，处理子路径下的API路由
