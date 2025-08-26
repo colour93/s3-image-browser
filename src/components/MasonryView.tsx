@@ -4,11 +4,9 @@ import React, { useState, useCallback, useMemo } from 'react';
 import { Masonry } from 'masonic';
 import { S3Object } from '@/lib/s3';
 import { formatFileSize } from '@/lib/utils';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from './ui/hover-card';
-import { Checkbox } from './ui/checkbox';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { FileIcon, ImageIcon, VideoIcon, Files, FolderIcon } from 'lucide-react';
-import { 
+import {
   Pagination,
   PaginationContent,
   PaginationItem,
@@ -44,7 +42,6 @@ const MasonryItem = React.memo(({ data: file, width }: MasonryItemProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
   React.useEffect(() => {
     if (file.type === 'image') {
       loadPreviewUrl();
@@ -53,7 +50,7 @@ const MasonryItem = React.memo(({ data: file, width }: MasonryItemProps) => {
 
   const loadPreviewUrl = async () => {
     try {
-      const response = await fetch('/api/preview', {
+      const response = await fetch(`/s3-manage/api/preview`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -82,11 +79,11 @@ const MasonryItem = React.memo(({ data: file, width }: MasonryItemProps) => {
     }
   };
 
-  const itemHeight = file.type === 'image' && !imageError ? 
+  const itemHeight = file.type === 'image' && !imageError ?
     Math.max(200, Math.min(400, width * 0.75)) : 200;
 
   return (
-    <div 
+    <div
       className="bg-card rounded-lg border shadow-sm overflow-hidden group cursor-pointer hover:shadow-md transition-shadow"
       style={{ width, height: itemHeight }}
     >
@@ -107,7 +104,7 @@ const MasonryItem = React.memo(({ data: file, width }: MasonryItemProps) => {
 
         {/* 覆盖层 */}
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-200" />
-        
+
         {/* 文件信息覆盖层 */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-3 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-200">
           <p className="text-sm font-medium truncate">{file.name}</p>
@@ -120,12 +117,12 @@ const MasonryItem = React.memo(({ data: file, width }: MasonryItemProps) => {
 
 MasonryItem.displayName = 'MasonryItem';
 
-export function MasonryView({ 
-  files, 
-  folders, 
-  selectedFiles, 
-  onSelect, 
-  onPreview, 
+export function MasonryView({
+  files,
+  folders,
+  selectedFiles,
+  onSelect,
+  onPreview,
   onFolderClick,
   onDownload,
   currentPage,
@@ -135,8 +132,8 @@ export function MasonryView({
   loading,
   onPageChange
 }: MasonryViewProps) {
-  const imageFiles = useMemo(() => 
-    files.filter(file => !file.isFolder), 
+  const imageFiles = useMemo(() =>
+    files.filter(file => !file.isFolder),
     [files]
   );
 
@@ -148,7 +145,7 @@ export function MasonryView({
   const generatePaginationItems = () => {
     const items = [];
     const maxVisible = 5;
-    
+
     if (totalPages <= maxVisible) {
       for (let i = 1; i <= totalPages; i++) {
         items.push(
@@ -252,7 +249,7 @@ export function MasonryView({
         );
       }
     }
-    
+
     return items;
   };
 
@@ -328,14 +325,14 @@ export function MasonryView({
             columnWidth={250}
             overscanBy={5}
             render={({ index, data, width }) => (
-              <div 
+              <div
                 key={data.key}
                 onClick={() => handleItemClick(data)}
               >
-                <MasonryItem 
-                  index={index} 
-                  data={data} 
-                  width={width} 
+                <MasonryItem
+                  index={index}
+                  data={data}
+                  width={width}
                 />
               </div>
             )}
@@ -349,16 +346,16 @@ export function MasonryView({
           <Pagination>
             <PaginationContent>
               <PaginationItem>
-                <PaginationPrevious 
+                <PaginationPrevious
                   onClick={() => onPageChange(Math.max(1, currentPage - 1))}
                   className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
                 />
               </PaginationItem>
-              
+
               {generatePaginationItems()}
-              
+
               <PaginationItem>
-                <PaginationNext 
+                <PaginationNext
                   onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
                   className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
                 />

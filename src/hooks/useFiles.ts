@@ -48,8 +48,8 @@ export function useFiles({ prefix = '', page = 1, pageSize = 50 }: UseFilesOptio
         pageSize: pageSize.toString(),
       });
 
-      const response = await fetch(`/api/files?${params}`);
-      
+      const response = await fetch(`/s3-manage/api/files?${params}`);
+
       if (!response.ok) {
         throw new Error('Failed to fetch files');
       }

@@ -9,6 +9,13 @@ export interface AppConfig {
     bucket: string;
     prefix?: string;
   };
+  redis: {
+    host: string;
+    port: number;
+    password?: string;
+    db?: number;
+    enabled: boolean;
+  };
   app: {
     pageSize: number;
     maxFileSize: string;

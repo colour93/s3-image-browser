@@ -1,13 +1,23 @@
 version: '3.8'
 
 services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
   s3-image-browser:
     build:
       context: .
-      args:
-        # 可以通过环境变量设置子路径
-        # 例如：BASE_PATH=/oss-manage docker-compose up --build
-        BASE_PATH: ${BASE_PATH:-}
     ports:
       - "3000:3000"
     volumes:
@@ -17,6 +27,9 @@ services:
       # - ./logs:/app/logs
     environment:
       - NODE_ENV=production
-      # 运行时也需要设置 BASE_PATH
-      - BASE_PATH=${BASE_PATH:-}
+    depends_on:
+      - redis
     restart: unless-stopped
+
+volumes:
+  redis_data:

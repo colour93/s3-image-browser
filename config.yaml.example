@@ -6,6 +6,13 @@ aws:
   bucket: your-bucket-name
   prefix: "" # 可选的前缀路径
 
+redis:
+  host: localhost
+  port: 6379
+  password: "" # 可选的密码
+  db: 0 # 可选的数据库编号
+  enabled: true # 是否启用 Redis 缓存
+
 app:
   pageSize: 50
   maxFileSize: 100MB

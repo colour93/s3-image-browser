@@ -20,9 +20,6 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # 构建 Next.js 应用
-# BASE_PATH 环境变量会在构建时使用
-ARG BASE_PATH=""
-ENV BASE_PATH=${BASE_PATH}
 RUN pnpm run build
 
 # 生产镜像，复制所有文件并运行 Next.js
@@ -30,10 +27,6 @@ FROM base AS runner
 WORKDIR /app
 
 ENV NODE_ENV production
-
-# 保持 BASE_PATH 环境变量在运行时可用
-ARG BASE_PATH=""
-ENV BASE_PATH=${BASE_PATH}
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs

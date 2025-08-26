@@ -35,7 +35,6 @@ export function FileItem({
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [thumbnailLoading, setThumbnailLoading] = useState(false);
   const [thumbnailError, setThumbnailError] = useState(false);
-
   // 懒加载缩略图
   useEffect(() => {
     if (showThumbnail && item.type === 'image' && !thumbnailUrl && !thumbnailError) {
@@ -48,7 +47,7 @@ export function FileItem({
 
     setThumbnailLoading(true);
     try {
-      const response = await fetch('/api/preview', {
+      const response = await fetch(`/s3-manage/api/preview`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

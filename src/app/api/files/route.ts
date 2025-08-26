@@ -5,11 +5,20 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const prefix = searchParams.get('prefix') || '';
-    const page = parseInt(searchParams.get('page') || '1');
     const pageSize = parseInt(searchParams.get('pageSize') || '50');
 
-    const result = await listS3Objects(prefix, page, pageSize);
-    
+    const page = searchParams.get('page');
+
+    let result;
+
+    if (page) {
+      // 使用页码分页
+      result = await listS3Objects(prefix, parseInt(page), pageSize);
+    } else {
+      // 默认第一页
+      result = await listS3Objects(prefix, 1, pageSize);
+    }
+
     return NextResponse.json(result);
   } catch (error) {
     console.error('Error fetching files:', error);

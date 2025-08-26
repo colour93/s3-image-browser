@@ -20,7 +20,6 @@ interface FilePreviewProps {
 export function FilePreview({ file, isOpen, onClose, onDownload }: FilePreviewProps) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
   React.useEffect(() => {
     if (file && isOpen && SUPPORTED_FILE_TYPES.includes(file.type)) {
       loadPreviewUrl();
@@ -34,7 +33,7 @@ export function FilePreview({ file, isOpen, onClose, onDownload }: FilePreviewPr
 
     setLoading(true);
     try {
-      const response = await fetch('/api/preview', {
+      const response = await fetch(`/s3-manage/api/preview`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

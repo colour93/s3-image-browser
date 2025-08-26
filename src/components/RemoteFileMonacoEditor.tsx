@@ -5,7 +5,6 @@ export const RemoteFileMonacoEditor: React.FC<{ url: string }> = ({ url }) => {
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const getLanguageFromUrl = (url: string) => {
     if (url.endsWith('.ts')) return 'typescript';
     if (url.endsWith('.js')) return 'javascript';
@@ -20,7 +19,7 @@ export const RemoteFileMonacoEditor: React.FC<{ url: string }> = ({ url }) => {
     setLoading(true);
     setError(null);
 
-    fetch('/api/proxy', {
+    fetch(`/s3-manage/api/proxy`, {
       method: 'POST',
       body: JSON.stringify({ url }),
     })

@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // 支持子路径部署，可以通过环境变量配置
-  basePath: process.env.BASE_PATH || '',
+  basePath: '/s3-manage',
 
   // 确保静态资源路径正确
-  assetPrefix: process.env.BASE_PATH || '',
+  assetPrefix: '/s3-manage',
 
   images: {
     remotePatterns: [

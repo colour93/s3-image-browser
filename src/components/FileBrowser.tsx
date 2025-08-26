@@ -26,12 +26,11 @@ interface FileBrowserProps {
 export function FileBrowser({ initialPrefix = '' }: FileBrowserProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  
   // 从 URL 参数中获取初始状态
   const urlPath = searchParams.get('path') || initialPrefix;
   const urlPage = parseInt(searchParams.get('page') || '1');
   const urlView = (searchParams.get('view') as 'grid' | 'list') || 'list';
-  
+
   const [currentPrefix, setCurrentPrefix] = useState(urlPath);
   const [currentPage, setCurrentPage] = useState(urlPage);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>(urlView);
@@ -53,16 +52,16 @@ export function FileBrowser({ initialPrefix = '' }: FileBrowserProps) {
     toggleFileSelection,
     selectAllFiles,
     clearSelection,
-  } = useFiles({ 
-    prefix: currentPrefix ? currentPrefix + '/' : '', 
+  } = useFiles({
+    prefix: currentPrefix ? currentPrefix + '/' : '',
     page: currentPage,
-    pageSize: 50 
+    pageSize: 50
   });
 
   // 更新 URL 参数
   const updateURL = useCallback((path?: string, page?: number, view?: string) => {
     const params = new URLSearchParams();
-    
+
     if (path !== undefined && path !== '') {
       params.set('path', path);
     }
@@ -166,7 +165,7 @@ export function FileBrowser({ initialPrefix = '' }: FileBrowserProps) {
 
   const handleDownload = useCallback(async (file: S3Object) => {
     try {
-      const response = await fetch('/api/download', {
+      const response = await fetch(`/s3-manage/api/download`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
