@@ -1,0 +1,14 @@
+aws:
+  region: us-east-1
+  endpoint: your-endpoint
+  accessKeyId: your-access-key-id
+  secretAccessKey: your-secret-access-key
+  bucket: your-bucket-name
+  prefix: "" # 可选的前缀路径
+
+app:
+  pageSize: 50
+  maxFileSize: 100MB
+  supportedImageFormats: [jpg, jpeg, png, gif, webp, svg]
+  supportedVideoFormats: [mp4, webm, mov, avi]
+  downloadChunkSize: 1MB
