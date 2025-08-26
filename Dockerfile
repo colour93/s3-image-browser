@@ -1,6 +1,9 @@
 # 使用官方 Node.js 镜像作为基础镜像
 FROM node:18-alpine AS base
 
+# 启用 corepack，支持 pnpm
+RUN corepack enable
+
 # 安装依赖项
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
@@ -8,7 +11,6 @@ WORKDIR /app
 
 # 复制 package.json 和 pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN npm i -g pnpm
 RUN pnpm install --frozen-lockfile
 
 # 构建应用
@@ -51,7 +53,7 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]
